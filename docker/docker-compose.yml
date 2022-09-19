@@ -16,7 +16,9 @@ services:
 
   radius-server:
     container_name: radius
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     restart: unless-stopped
     depends_on: 
       - radius-mysql

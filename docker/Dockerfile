@@ -72,7 +72,7 @@ RUN chown -R www-data:www-data /var/www/html
 RUN /bin/sed -i 's/AllowOverride\ None/AllowOverride\ All/g' /etc/apache2/apache2.conf
 
 # Make init.sh script executable
-RUN chmod +x /var/www/html/docker/init.sh
+RUN chmod +x /var/www/html/init.sh
 
 # Remove the original sample index.html file
 RUN rm -rf /var/www/html/index.html
@@ -87,5 +87,5 @@ RUN touch /tmp/daloradius.log && chown -R www-data:www-data /tmp/daloradius.log
 EXPOSE 1812 1813 80
 
 # Run the script which executes freeradius in foreground
-CMD ["/var/www/html/docker/init.sh"]
-ENTRYPOINT ["/var/www/html/docker/init.sh"]
+CMD ["/var/www/html/init.sh"]
+ENTRYPOINT ["/var/www/html/init.sh"]
