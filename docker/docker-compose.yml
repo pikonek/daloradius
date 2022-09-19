@@ -1,0 +1,43 @@
+version: "3"
+
+services:
+
+  radius-mysql:
+    image: mariadb:10.3
+    container_name: radius-mysql
+    restart: unless-stopped
+    environment:
+      - MYSQL_DATABASE=radius
+      - MYSQL_USER=radius
+      - MYSQL_PASSWORD=radiusdbpw
+      - MYSQL_ROOT_PASSWORD=radiusrootdbpw
+    volumes:
+      - "/opt/pikonek/radius/mysql:/var/lib/mysql"
+
+  radius-server:
+    container_name: radius
+    build: .
+    restart: unless-stopped
+    depends_on: 
+      - radius-mysql
+    ports:
+      - '1812:1812/udp'
+      - '1813:1813/udp'
+      - '8080:80'
+    environment:
+      - MYSQL_HOST=radius-mysql
+      - MYSQL_PORT=3306
+      - TZ=Asia/Manila
+      - MYSQL_DATABASE=radius
+      - MYSQL_USER=radius
+      - MYSQL_PASSWORD=radiusdbpw
+      # Optional settings
+      - DEFAULT_CLIENT_SECRET=testing123
+      - MAIL_SMTPADDR=127.0.0.1
+      - MAIL_PORT=25
+      - MAIL_FROM=
+      - MAIL_AUTH=
+    volumes:
+      - /opt/pikonek/radius/data:/data
+    # If you want to disable debug output, remove the command parameter
+    command: -X
